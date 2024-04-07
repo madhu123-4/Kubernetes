@@ -5,7 +5,43 @@ This is The repo For Learning The concepts of Kubernetes
 
 In Kubernetes, a pod is the smallest deployable unit that can be managed. It represents a single instance of a running process in your cluster. A pod can contain one or more containers, such as Docker containers. These containers are tightly coupled and share resources, such as storage and networking, and are scheduled together on the same node in the cluster. And it acts like a wrapper for your Container.
 
-Pods are ephemeral by nature, meaning they can be created, destroyed, and replicated dynamically. They are designed to be easily disposable and replaceable, which helps in achieving high availability and scalability for your applications running on Kubernetes.
+Pods are ephemeral by nature, meaning they can be created, destroyed, and replicated dynamically. They are designed to be easily disposable and replaceable, which helps in achieving high availability and scalability for your applications running on Kubernetes. Every Pod has its own IP address and no duplicate containers are created inside a pod.
+
+
+eg: vi pod-def.yml
+```sh
+apiVersion: v1 
+kind: Pod
+metadata:
+ name: nginx-pod
+spec:
+ containers:
+ - name: nginx-container
+   image: nginx:latest
+```
+commands:
+```sh
+kubectl create -f pod-def.yml      // create an pod
+kubectl get pods                   // list the pods
+kubectl get pods -o wide           // list the pods with additional info like ip address of
+                                      worker node and pod
+kubectl describe pod nginx-pod     // detailed info about pod
+kubectl exec -it nginx-pod bash    // login into pod
+kubectl delete pod nginx-pod       // delete an pod
+```
+
+### Edit pod in 2 ways:
+1. Edit the yaml file:
+vi pod-def.yml -> make changes -> save(:wq)
+```sh
+kubectl apply -f pod-def.yml
+```
+2. Edit the running pod directly:
+```sh
+kubectl edit pod nginx-pod
+```
+-> open in vi editor -> make changes-> save(:wq)
+
 
 ### What are the advantages  and disadvantages of using a pod?
 
@@ -21,7 +57,7 @@ Pods in Kubernetes offer several advantages, including:
 
 5. **Networking**: Pods have their own unique IP address and can communicate with other pods in the cluster without needing to manage networking configurations manually.
 
-However, pods also have some disadvantages:
+However, pods also have some **disadvantages**:
 
 1. **Limited Scope**: Pods are designed to be ephemeral and disposable, which means they are not suitable for long-running services that require a persistent state.
 
@@ -33,7 +69,47 @@ However, pods also have some disadvantages:
 
 Overall, pods offer a flexible and scalable way to deploy applications in Kubernetes, but they require careful planning and management to ensure optimal performance and resource utilization.
 
-what is pod lifecycle?
+### how do you debug a pod?
+
+Debugging a pod in Kubernetes involves diagnosing and troubleshooting issues that may be affecting its functionality. Here are some common approaches to debug a pod:
+
+1. **Check pod status**: Use the `kubectl get pods` command to check the status of the pod. If the pod is in a pending or error state, it may indicate a problem with the pod configuration or the underlying infrastructure.
+
+2. **View pod logs**: Use the `kubectl logs` command to view the logs of containers running in the pod. This can help you identify errors or issues that may be occurring within the containers.
+
+   ```sh
+   kubectl logs <pod-name> [-c <container-name>]
+   ```
+
+3. **Exec into a container**: Use the `kubectl exec` command to execute a command inside a running container. This can be useful for troubleshooting issues or inspecting the container environment.
+
+   ```sh
+   kubectl exec -it <pod-name> [-c <container-name>] -- /bin/bash
+   ```
+
+4. **Check pod events**: Use the `kubectl describe` command to get detailed information about the pod, including any events that may have occurred, such as container failures or resource constraints.
+
+   ```sh
+   kubectl describe pod <pod-name>
+   ```
+
+5. **Check cluster resources**: Ensure that the pod's resource requirements (CPU, memory) are within the limits of the cluster's capacity. Use `kubectl top` to view resource usage.
+
+   ```sh
+   kubectl top pod <pod-name>
+   ```
+
+6. **Check networking**: Ensure that the pod has the correct network configuration and can communicate with other pods and services in the cluster. Use `kubectl exec` to test network connectivity.
+
+7. **Check pod configuration**: Verify that the pod's configuration (e.g., volumes, environment variables) is correct and matches your expectations.
+
+8. **Check node logs**: If the pod is not starting or encountering issues related to the node, check the node's logs (`/var/log/` directory) for any relevant messages.
+
+9. **Enable debugging tools**: You can deploy debugging tools, such as `kubectl debug`, into the pod to help diagnose issues. These tools can provide additional insights into the pod's environment and state.
+
+By using these approaches, you can effectively debug pods in Kubernetes and resolve any issues that may be affecting their performance or functionality.
+
+### what is pod lifecycle?
 
 
 The lifecycle of a pod in Kubernetes consists of several phases, starting from creation to deletion. Understanding these phases is crucial for managing and troubleshooting pods effectively. Here are the key phases in a pod's lifecycle:
