@@ -182,3 +182,8 @@ The scheduler in Kubernetes is a component of the Kubernetes control plane that 
 The scheduler follows a set of rules and policies to make scheduling decisions. It takes into account factors such as affinity and anti-affinity rules, pod resource requests and limits, node selectors, and taints and tolerations to ensure that pods are placed on appropriate nodes.
 
 The scheduler continuously monitors the cluster for new pods that need to be scheduled and makes scheduling decisions in real-time to ensure that pods are deployed efficiently and effectively across the cluster.
+
+### What is a etcd in Kubernetes?
+In Kubernetes, etcd is a distributed key-value store that is used to store the cluster's configuration data, state, and metadata. It is a critical component of a Kubernetes cluster as it stores the cluster's state, such as information about pods, nodes, configurations, and secrets. Etcd ensures that the cluster remains consistent and can recover from failures.
+
+Etcd uses the Raft consensus algorithm to manage a highly-available replicated log. This allows it to maintain consistency across the cluster, even in the presence of failures or network partitions. Etcd is designed to be fast, reliable, and secure, making it an ideal choice for storing Kubernetes' critical data.
