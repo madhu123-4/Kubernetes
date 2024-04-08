@@ -349,5 +349,22 @@ spec:
     ports:
     - containerPort: 80
 ```
+### What is namespace in kubernetes?
 
 This YAML file defines a Pod named `my-pod` with a single container using the `nginx:latest` image and exposing port `80`.
+
+In Kubernetes, a namespace is a way to divide cluster resources between multiple users (via resource quota) and provide a scope for names. It is essentially a virtual cluster within a Kubernetes cluster. Namespaces are intended for use in environments with many users spread across multiple teams or projects.
+
+Here are some key points about namespaces:
+
+1. **Isolation**: Namespaces provide a level of isolation between resources within the same cluster. Each namespace has its own set of resources, such as pods, services, and deployments.
+
+2. **Scope for Names**: Namespaces provide a scope for names, which means that each resource within a namespace must have a unique name, but the same name can be used in different namespaces.
+
+3. **Resource Quota**: Namespaces can have resource quotas applied to them, limiting the amount of CPU, memory, and other resources that can be used by resources within the namespace.
+
+4. **Default Namespace**: When you create resources without specifying a namespace, they are created in the default namespace. You can also create custom namespaces for organizing resources.
+
+5. **Control Plane Components**: Control plane components, such as kube-system and kube-public, are also typically created in separate namespaces to isolate them from user resources.
+
+Namespaces are a powerful feature of Kubernetes that help in organizing and managing resources within a cluster, especially in multi-tenant environments.
